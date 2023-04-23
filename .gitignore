@@ -3,6 +3,15 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+/.venv
+/.idea
+/venv
+
+
 # C extensions
 *.so
 
