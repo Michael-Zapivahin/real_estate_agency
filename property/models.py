@@ -6,7 +6,10 @@ from django.contrib.auth.models import User
 class Flat(models.Model):
     owner = models.CharField('ФИО владельца', max_length=200)
     owners_phonenumber = models.CharField('Номер владельца', max_length=20)
-    liked_by = models.ManyToManyField(User, related_name="liked_flats", verbose_name='Кто лайкнул:')
+    liked_by = models.ManyToManyField(
+        User, related_name="liked_flats",
+        blank=True, null=True, verbose_name='Кто лайкнул:'
+    )
     created_at = models.DateTimeField(
         'Когда создано объявление',
         default=timezone.now,
