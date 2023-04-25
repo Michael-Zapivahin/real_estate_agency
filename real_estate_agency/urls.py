@@ -1,5 +1,6 @@
-from django.conf.urls import url
+from django.urls import re_path as url
 from django.contrib import admin
+# from django.conf.urls import  url
 
 from property import views
 
