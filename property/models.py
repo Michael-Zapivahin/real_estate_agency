@@ -5,9 +5,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Flat(models.Model):
-    owner = models.CharField('ФИО владельца', max_length=200)
-    owners_phonenumber = models.CharField('Номер владельца', max_length=20)
-    owner_pure_phone = PhoneNumberField('Нормализованный номер владельца', blank=True, db_index=True)
     liked_by = models.ManyToManyField(
         User, related_name="liked_flats",
         blank=True, verbose_name='Кто лайкнул:'
@@ -60,8 +57,10 @@ class Flat(models.Model):
 
 class Complaint(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='жалобы', related_name='complaints')
-    flat = models.ForeignKey(Flat, on_delete=models.SET_NULL, null=True, verbose_name='квартира')
-    text = models.TextField()
+    flat = models.ForeignKey(
+        Flat, on_delete=models.SET_NULL, null=True, verbose_name='квартира', related_name='complaints'
+    )
+    text = models.TextField(verbose_name='Текст сообщения')
 
     def __str__(self):
         return f'user {self.user} flat {self.flat}'
@@ -75,7 +74,8 @@ class Owner(models.Model):
         Flat,
         verbose_name='Квартиры в собственности',
         related_name='owners',
-        blank=True,)
+        blank=True
+    )
 
     def __str__(self):
         return f'{self.name}, {self.pure_phone}'

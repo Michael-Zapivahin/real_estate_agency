@@ -3,24 +3,13 @@
 from django.db import migrations
 
 
-def load_owner(apps, schema_editor):
+def load_flats(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
     Owner = apps.get_model('property', 'Owner')
-    for owner in Owner.objects.all().iterator():
-        flats = Flat.objects.filter(owner=owner.name)
-        for flat in flats:
-            owner.flats.add(flat)
-            owner.save()
-
-
-def load_flats(apps, schema_editor):
-    Flat = apps.get_model('property','Flat')
-    Owner = apps.get_model('property','Owner')
     for flat in Flat.objects.all().iterator():
-        owner = Owner.objects.get_or_create(name=flat.owner, pure_phone=flat.owner_pure_phone)
-        owner_flat = owner[0].flats
-        owner_flat.set([flat])
-
+        owner, created = Owner.objects.get_or_create(name=flat.owner, pure_phone=flat.owner_pure_phone)
+        owner.flats.set([flat])
+        owner.save()
 
 
 class Migration(migrations.Migration):

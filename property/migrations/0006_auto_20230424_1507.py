@@ -3,14 +3,6 @@
 from django.db import migrations
 
 
-def update_new_building(apps, schema_editor):
-    Flat = apps.get_model('property', 'Flat')
-    for flat in Flat.objects.all():
-        flat.new_building = int(flat.construction_year) >= 2015
-        print(flat.new_building, flat.construction_year)
-        break
-
-
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -18,5 +10,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(update_new_building)
     ]

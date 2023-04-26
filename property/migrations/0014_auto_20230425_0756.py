@@ -6,13 +6,10 @@ from django.db import migrations
 
 def update_phone_numbers(apps, schema_editor):
     Flat = apps.get_model('property', 'Flat')
-    for flat in Flat.objects.all():
-        owner_pure_phone = phonenumbers.parse(flat.owners_phonenumber, 'RU')
-        flat.owner_pure_phone = f'+7{owner_pure_phone.national_number}'
-        print(f'start {flat.owners_phonenumber} end number {flat.owner_pure_phone}')
+    for flat in Flat.objects.all().iterator():
+        pure_phone = phonenumbers.parse(flat.owners_phonenumber, 'RU')
+        flat.owner_pure_phone = f'{pure_phone.country_code}{pure_phone.national_number}'
         flat.save()
-        # w = 2/0
-
 
 
 class Migration(migrations.Migration):

@@ -3,15 +3,6 @@ import phonenumbers
 from django.db import migrations
 
 
-def update_phone_numbers(apps, schema_editor):
-    Flat = apps.get_model('property', 'Flat')
-    for flat in Flat.objects.all():
-        owner_pure_phone = phonenumbers.parse(flat.owners_phonenumber, 'RU')
-        flat.owner_pure_phone = f'+7{owner_pure_phone.national_number}'
-        # print(f'start {flat.owners_phonenumber} end number {flat.owner_pure_phone}')
-        flat.save()
-
-
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -19,5 +10,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(update_phone_numbers)
     ]
